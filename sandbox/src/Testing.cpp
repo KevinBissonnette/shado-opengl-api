@@ -29,6 +29,8 @@ public:
 
 	void onInit() override {
 		
+		camera.setRotationSpeed(360);
+
 		shader = new Shader("celestialbody.glsl");
 		glEnable(GL_DEPTH_TEST);
 
@@ -60,11 +62,30 @@ public:
 		solarSystem.push_back(moon);
 		*/
 
-		// Earth
+		// Mars
 		CelestialBody mars = CelestialBody("Mars", 6.4171e23, 3.3962, &sun, 227939366000, 24070, 150, fraction(1, 1.027), 25.19);
 		mars.InitRender("assets/mars.jpg");
 		solarSystem.push_back(mars);
 
+		// Jupiter
+		CelestialBody jupiter = CelestialBody("Jupiter", 1.8982e27, 71.492, &sun, 778479000000, 13070, 30, fraction(24, 9.9250), 3.13);
+		jupiter.InitRender("assets/jupiter.jpg");
+		solarSystem.push_back(jupiter);
+
+		// Saturn
+		CelestialBody saturn = CelestialBody("Saturn", 5.6834e26, 58.232, &sun, 1.4335366e12, 9680, -90, fraction(24, 10.5), 26.73);
+		saturn.InitRender("assets/saturn.jpg");
+		solarSystem.push_back(saturn);
+
+		// Uranus
+		CelestialBody uranus = CelestialBody("Uranus", 8.6810e25, 25.362, &sun, 2.87097163e12, 6800, -120, -fraction(24, 17), 97.77);
+		uranus.InitRender("assets/uranus.jpg");
+		solarSystem.push_back(uranus);
+
+		// Neptune
+		CelestialBody neptune = CelestialBody("Neptune", 1.02413e26, 24.622, &sun, 4.49841e12, 5430, 0, -0.6713, 28.32);
+		neptune.InitRender("assets/neptune.jpg");
+		solarSystem.push_back(neptune);
 
 		// Old code
 
@@ -115,6 +136,8 @@ public:
 			p.onUpdate(camPos, shader);
 		}*/
 
+		// Le deltat, pour la simulation
+		// Warning si on eval plus que 10 jours
 		float deltaTime = dt * 24 * 60 * 60 *10;
 
 		for (int x = 0; x < solarSystem.size(); x++)
