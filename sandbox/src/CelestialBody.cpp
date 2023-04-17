@@ -7,16 +7,16 @@ CelestialBody::CelestialBody()
 
 CelestialBody::CelestialBody(string name, double mass, float radius, float siderealRotationPeriod)
 {
-    // C'est le constructeur pour le soleil, on a donc pas a géré l'orbite, car on est au centre du systeme solaire
+    // C'est le constructeur pour le soleil, on a donc pas a gï¿½rï¿½ l'orbite, car on est au centre du systeme solaire
 
-    // On commence pas set les variable qu'on nous as passé
+    // On commence pas set les variable qu'on nous as passï¿½
     this->name = name;
-    this->mass = mass * FACTOR;
+    this->mass = mass;
     this->radius = radius;
     this->siderealRotationPeriod = siderealRotationPeriod;
 
     // Le reste des variable orbital est set a 0
-    // Techniquement useless, car elle serve juste au setup, mais sa peut être utilie si on décide de les calculer pour les display
+    // Techniquement useless, car elle serve juste au setup, mais sa peut ï¿½tre utilie si on dï¿½cide de les calculer pour les display
     this->semiMajorAxis = 0;
     this->orbitalSpeed = 0;
     this->orbitAngle = 0;
@@ -24,14 +24,14 @@ CelestialBody::CelestialBody(string name, double mass, float radius, float sider
 
     // On calcule la taile a affichier
     // Pourquoi une variable quand on peut call la function ?
-    // Pas éval un log a chaque frame, that why mate
+    // Pas ï¿½val un log a chaque frame, that why mate
     this->displaySize = GetDisplaySize(this->radius);
 
     // On calcul l'axe orbital
-    // Et oui, le soleil tourne sur lui-même. Spin to win
+    // Et oui, le soleil tourne sur lui-mï¿½me. Spin to win
     this->rotationalAxis = vec3(0, 1, 0);
 
-    // On init maintenant la velocité et positon
+    // On init maintenant la velocitï¿½ et positon
     // Soit 0 pour toute
     this->currentVelocity = vec3(0, 0, 0);
     this->currentPosition = vec3(0, 0, 0);
@@ -39,15 +39,15 @@ CelestialBody::CelestialBody(string name, double mass, float radius, float sider
 
 CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt)
 {
-    // C'est le constructeur pour les diverse planete/planete naine/lune/astéroide/comet/whatever
+    // C'est le constructeur pour les diverse planete/planete naine/lune/astï¿½roide/comet/whatever
 
-    // On commence pas set les variable qu'on nous as passé
+    // On commence pas set les variable qu'on nous as passï¿½
     this->name = name;
-    this->mass = mass * FACTOR;
+    this->mass = mass;
     this->radius = radius;
     this->parentBody = parentBody;
-    this->semiMajorAxis = semiMajorAxis * FACTOR;
-    this->orbitalSpeed = orbitalSpeed * FACTOR;
+    this->semiMajorAxis = semiMajorAxis;
+    this->orbitalSpeed = orbitalSpeed;
     this->orbitAngle = orbitAngle;
     this->siderealRotationPeriod = siderealRotationPeriod;
 
@@ -56,28 +56,28 @@ CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBo
     // Think Mark Think ! Why call a log at each frame when you can call it once and just be done with it !
     this->displaySize = GetDisplaySize(this->radius);
 
-    // Maintenant la section difficle, trouver la position et velocité initial
+    // Maintenant la section difficle, trouver la position et velocitï¿½ initial
 
     // Les x sont donner par le sin de l'angle, alors que les z sont par le cos, tout les 2 multiplier par le semiMajorAxis
-    vec3 relativePosition = vec3(sin(radians(orbitAngle)), 0, cos(radians(orbitAngle))) * this->semiMajorAxis;
+    dvec3 relativePosition = dvec3(sin(radians(orbitAngle)), 0, cos(radians(orbitAngle))) * semiMajorAxis;
 
-    // La postion relative est aussi notre normal, on peut donc trouver la tangente, soi la direction pour la vélocité
-    // Dans notre cas, car on est en 2d-ish, on peut just ajouté 90 degrée pour le trouver
+    // La postion relative est aussi notre normal, on peut donc trouver la tangente, soi la direction pour la vï¿½locitï¿½
+    // Dans notre cas, car on est en 2d-ish, on peut just ajoutï¿½ 90 degrï¿½e pour le trouver
     float tanRotation = degreeToRad(90);
-    vec3 relativeVelocity = vec3(sin(radians(orbitAngle) + tanRotation), 0, cos(radians(orbitAngle) + tanRotation)) * this->orbitalSpeed;
+    dvec3 relativeVelocity = dvec3(sin(radians(orbitAngle) + tanRotation), 0, cos(radians(orbitAngle) + tanRotation)) * orbitalSpeed;
 
-    // On a désormais la position et vélocité relative au parent
-    // Pour obtenir la postion/velocité absolut, il faut l'additionner a celle du parent
-    // C'est pour cela qui est néssésaire que les parent soit init correctement avant l'enfant
+    // On a dï¿½sormais la position et vï¿½locitï¿½ relative au parent
+    // Pour obtenir la postion/velocitï¿½ absolut, il faut l'additionner a celle du parent
+    // C'est pour cela qui est nï¿½ssï¿½saire que les parent soit init correctement avant l'enfant
 
     this->currentPosition = parentBody->currentPosition + relativePosition;
     this->currentVelocity = parentBody->currentVelocity + relativeVelocity;
 
     // On calcul l'axe orbital
-    // On le fait ici car on a besoin de la vélocité
+    // On le fait ici car on a besoin de la vï¿½locitï¿½
     // C'est vers le haut, avec une rotation de axialTilt selon la normal de l'orbite
-    // No idea se que sa implique coté saison
-    mat4 rotMat = rotate(axialTilt, normalize(relativePosition));
+    // No idea se que sa implique cotï¿½ saison
+    mat4 rotMat = rotate(axialTilt, vec3(normalize(relativePosition)));
 
     // On applique la matrice de rotation a un vecteur vers le haut et voila !
     this->rotationalAxis = vec3(vec4(0, 1, 0, 0) * rotMat);
@@ -121,24 +121,24 @@ void CelestialBody::InitRender(string texture_path)
 
 void CelestialBody::UpdateForce(vector<CelestialBody>* solarSystem)
 {
-    // Cette function calcule la force gravitationnel a partir des autres corps céleste
+    // Cette function calcule la force gravitationnel a partir des autres corps cï¿½leste
 
-    // On commence par reset la force, elle a été utilisé dans le tick précédent
+    // On commence par reset la force, elle a ï¿½tï¿½ utilisï¿½ dans le tick prï¿½cï¿½dent
     this->currentForce = vec3(0, 0, 0);
 
     // Calcule de la force d'attraction gravitationelle
     for (int x = 0; x < solarSystem->size(); x++)
     {
-        // Car la liste inclue tout les astres, on fait sur de ne pas s'inclure soit même
+        // Car la liste inclue tout les astres, on fait sur de ne pas s'inclure soit mï¿½me
 
         // On fetch le corps celeste
         CelestialBody cb = (*solarSystem)[x];
 
-        // On valide que on essait pas de calculer la gravité sur nous-même
+        // On valide que on essait pas de calculer la gravitï¿½ sur nous-mï¿½me
         // Non seulement sa fait pas de sens, mais sa fait aussi une division par 0
         if (cb.name != this->name)
         {
-            // On délegue le calcule a une function
+            // On dï¿½legue le calcule a une function
             this->currentForce += GetGravitationalForce(&cb);
         }
     }
@@ -146,35 +146,35 @@ void CelestialBody::UpdateForce(vector<CelestialBody>* solarSystem)
 
 void CelestialBody::UpdateVelocity(float deltaT)
 {
-    // Function pour mettre a jour la velocité
+    // Function pour mettre a jour la velocitï¿½
 
-    // C'est le même calcule pour litéralement tout object newtonien
-    // Et même la, c'est juste l'accélération qui change...
+    // C'est le mï¿½me calcule pour litï¿½ralement tout object newtonien
+    // Et mï¿½me la, c'est juste l'accï¿½lï¿½ration qui change...
 
-    // On obtient d'abort l'accélération
+    // On obtient d'abort l'accï¿½lï¿½ration
     // F = M * A, du coup, A = F / M
-    vec3 acceleration = this->currentForce / this->mass;
+    dvec3 acceleration = this->currentForce / this->mass;
 
     // V = Vi + A*T
-    this->currentVelocity = this->currentVelocity + acceleration * deltaT;
+    this->currentVelocity = this->currentVelocity + acceleration * double(deltaT);
 }
 
 void CelestialBody::UpdatePosition(float deltaT)
 {
     // Function pour mettre a jour la position
 
-    // C'est le même calcule pour litéralement tout object newtonien
+    // C'est le mï¿½me calcule pour litï¿½ralement tout object newtonien
 
     // D = Di + V*T
-    this->currentPosition = this->currentPosition + this->currentVelocity * deltaT;
+    this->currentPosition = this->currentPosition + this->currentVelocity * double(deltaT);
 
     // On Maj aussi la rotation ici
-    // Pas de calcul physique avec la vélocité angulaire, on fait juste spinner a une vitesse constante
+    // Pas de calcul physique avec la vï¿½locitï¿½ angulaire, on fait juste spinner a une vitesse constante
 
     currentRotation += siderealRotationPeriod * deltaT;
 
-    // Pour évité des erreur de float, on s'assure que la rotation reste entre -180 et et 180
-    // Car on peut théoriquement faire plusieur rotation dans une update, on utilise des whiles
+    // Pour ï¿½vitï¿½ des erreur de float, on s'assure que la rotation reste entre -180 et et 180
+    // Car on peut thï¿½oriquement faire plusieur rotation dans une update, on utilise des whiles
     // Over engenering ? Non, c'est du futurproofing
     while (currentRotation < -180)
     {
@@ -219,6 +219,14 @@ mat4 CelestialBody::GetTransformationMatrix()
     glm::vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, 10.0f) };
     return /*mat4(displaySize) * */translate(mat4(1.0f),tempPos) * rotate(this->currentRotation, this->rotationalAxis) *scale(glm::mat4(1.0f),glm::vec3(1));
 }
+    /*
+dmat4 CelestialBody::GetTransformationMatrix()
+{
+    // On applique les transformation dans l'ordre suivant
+    // Taille * Tranlation * Rotation
+    return dmat4(displaySize) * translate(dmat4(), this->currentPosition) * dmat4(rotate(this->currentRotation, this->rotationalAxis));
+}
+*/
 
 float CelestialBody::GetDisplaySize(float radius)
 {
@@ -232,8 +240,8 @@ float CelestialBody::degreeToRad(float degree)
 
 vec3 CelestialBody::GetGravitationalForce(CelestialBody* cb)
 {
-    vec3 detla = this->currentPosition - cb->currentPosition;
-    vec3 dir = -normalize(detla);
+    dvec3 detla = this->currentPosition - cb->currentPosition;
+    dvec3 dir = -normalize(detla);
     float r = length(detla);
 
     vec3 force = G * ((this->mass * cb->mass) / (r * r)) * dir;
