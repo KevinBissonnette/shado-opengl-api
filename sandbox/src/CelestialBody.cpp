@@ -195,6 +195,7 @@ void CelestialBody::UpdateRender(vec3 camPos, Shader* shader)
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), Application::get().getWindow().getAspectRatio(), 0.1f, 100.0f);
 
     // Set up the model matrix
+
     glm::mat4 model = GetTransformationMatrix();
     shader->setMat4("view", view);
     shader->setMat4("projection", projection);
@@ -207,13 +208,16 @@ void CelestialBody::UpdateRender(vec3 camPos, Shader* shader)
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
     Texture->unbind();
-}
 
+}
+double map(double x, double in_min, double in_max, double out_min, double out_max);
 mat4 CelestialBody::GetTransformationMatrix()
 {
     // On applique les transformation dans l'ordre suivant
     // Taille * Tranlation * Rotation
-    return mat4(displaySize) * translate(mat4(), this->currentPosition) * rotate(this->currentRotation, this->rotationalAxis);
+    
+    glm::vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, 10.0f) };
+    return /*mat4(displaySize) * */translate(mat4(1.0f),tempPos) * rotate(this->currentRotation, this->rotationalAxis) *scale(glm::mat4(1.0f),glm::vec3(1));
 }
 
 float CelestialBody::GetDisplaySize(float radius)
@@ -283,4 +287,9 @@ void CelestialBody::createSphere(unsigned int slices, unsigned int stacks, std::
             indices.push_back(bottomRight);
         }
     }
+}
+
+double map(double x, double in_min, double in_max, double out_min, double out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
