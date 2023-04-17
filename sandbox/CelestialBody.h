@@ -25,9 +25,11 @@ public:
 
 	const float PI = 3.14159265359;
 
-	const float G = 0.00000000006674 * 24 * 60 * 60;
+	const float G = 0.00000000006674;
 
 	const float BASE_SIZE = 1;
+
+	const float FACTOR = 0.000000001;
 
 	// ===============================
 	//			Variable
@@ -45,13 +47,13 @@ public:
 
 	// ===== ] Config [ =====
 
-	// The object mass, in 10^20 kg
+	// The object mass, kg
 	float mass = 1;
 
-	// The orbital radius, in million kilometer
+	// The orbital radius, meter
 	float semiMajorAxis = 100;
 
-	// The orbital speed, in million of km/day
+	// The orbital speed, in m/s
 	float orbitalSpeed = 2.5;
 
 	// The celestial body radius, in thousand of Km
@@ -101,8 +103,8 @@ public:
 	// ===== ] Constructeur [ =====
 
 	CelestialBody();
-	CelestialBody(string name, float mass, float radius, float siderealRotationPeriod);
-	CelestialBody(string name, float mass, float radius, CelestialBody* parentBody, float semiMajorAxis, float orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt);
+	CelestialBody(string name, double mass, float radius, float siderealRotationPeriod);
+	CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt);
 
 	void InitRender(string texture_path);
 

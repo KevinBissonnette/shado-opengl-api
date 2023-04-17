@@ -29,13 +29,13 @@ public:
 		glEnable(GL_DEPTH_TEST);
 
 		// On start par le soleil
-		CelestialBody sun = CelestialBody("sun", 19885000000, 695, 25);
+		CelestialBody sun = CelestialBody("sun", 1.9885e30, 695, 25);
 		sun.InitRender("assets/sun.jpg");
 		solarSystem.push_back(sun);
 
 		// Mercury
 		//CelestialBody mercury = CelestialBody("mercury", 3301.1, 2.439, &sun, 57.909050, 4.060800, 0.2, (float)1/(float)176, 2.04);
-		CelestialBody mercury = CelestialBody("mercury", 3301.1, 2.439, &sun, 57.909050, 4.060800, 0.2, (float)1 / (float)176, 2.04);
+		CelestialBody mercury = CelestialBody("mercury", 3.3011e23, 2.439, &sun, 57909050000, 47360, 0.2, (float)1 / (float)176, 2.04);
 		mercury.InitRender("assets/mercury.jpg");
 		solarSystem.push_back(mercury);
 
@@ -88,6 +88,8 @@ public:
 			p.onUpdate(camPos, shader);
 		}*/
 
+		float deltaTime = dt * 24 * 60 * 60;
+
 		for (int x = 0; x < solarSystem.size(); x++)
 		{
 			solarSystem[x].UpdateForce(&solarSystem);
@@ -95,12 +97,12 @@ public:
 
 		for (int x = 0; x < solarSystem.size(); x++)
 		{
-			solarSystem[x].UpdateVelocity(dt);
+			solarSystem[x].UpdateVelocity(deltaTime);
 		}
 
 		for (int x = 0; x < solarSystem.size(); x++)
 		{
-			solarSystem[x].UpdatePosition(dt);
+			solarSystem[x].UpdatePosition(deltaTime);
 		}
 	}
 

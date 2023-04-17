@@ -5,13 +5,13 @@ CelestialBody::CelestialBody()
     // Please don't use this
 }
 
-CelestialBody::CelestialBody(string name, float mass, float radius, float siderealRotationPeriod)
+CelestialBody::CelestialBody(string name, double mass, float radius, float siderealRotationPeriod)
 {
     // C'est le constructeur pour le soleil, on a donc pas a géré l'orbite, car on est au centre du systeme solaire
 
     // On commence pas set les variable qu'on nous as passé
     this->name = name;
-    this->mass = mass;
+    this->mass = mass * FACTOR;
     this->radius = radius;
     this->siderealRotationPeriod = siderealRotationPeriod;
 
@@ -37,17 +37,17 @@ CelestialBody::CelestialBody(string name, float mass, float radius, float sidere
     this->currentPosition = vec3(0, 0, 0);
 }
 
-CelestialBody::CelestialBody(string name, float mass, float radius, CelestialBody* parentBody, float semiMajorAxis, float orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt)
+CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt)
 {
     // C'est le constructeur pour les diverse planete/planete naine/lune/astéroide/comet/whatever
 
     // On commence pas set les variable qu'on nous as passé
     this->name = name;
-    this->mass = mass;
+    this->mass = mass * FACTOR;
     this->radius = radius;
     this->parentBody = parentBody;
-    this->semiMajorAxis = semiMajorAxis;
-    this->orbitalSpeed = orbitalSpeed;
+    this->semiMajorAxis = semiMajorAxis * FACTOR;
+    this->orbitalSpeed = orbitalSpeed * FACTOR;
     this->orbitAngle = orbitAngle;
     this->siderealRotationPeriod = siderealRotationPeriod;
 
@@ -59,12 +59,12 @@ CelestialBody::CelestialBody(string name, float mass, float radius, CelestialBod
     // Maintenant la section difficle, trouver la position et velocité initial
 
     // Les x sont donner par le sin de l'angle, alors que les z sont par le cos, tout les 2 multiplier par le semiMajorAxis
-    vec3 relativePosition = vec3(sin(radians(orbitAngle)), 0, cos(radians(orbitAngle))) * semiMajorAxis;
+    vec3 relativePosition = vec3(sin(radians(orbitAngle)), 0, cos(radians(orbitAngle))) * this->semiMajorAxis;
 
     // La postion relative est aussi notre normal, on peut donc trouver la tangente, soi la direction pour la vélocité
     // Dans notre cas, car on est en 2d-ish, on peut just ajouté 90 degrée pour le trouver
     float tanRotation = degreeToRad(90);
-    vec3 relativeVelocity = vec3(sin(radians(orbitAngle) + tanRotation), 0, cos(radians(orbitAngle) + tanRotation)) * orbitalSpeed;
+    vec3 relativeVelocity = vec3(sin(radians(orbitAngle) + tanRotation), 0, cos(radians(orbitAngle) + tanRotation)) * this->orbitalSpeed;
 
     // On a désormais la position et vélocité relative au parent
     // Pour obtenir la postion/velocité absolut, il faut l'additionner a celle du parent
