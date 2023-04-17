@@ -124,6 +124,7 @@ public:
 	void onUpdate(TimeStep dt) override 
 	{
 		camera.onUpdate(dt);
+
 		/*float x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
 		float y = 0.0f;
 		float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));

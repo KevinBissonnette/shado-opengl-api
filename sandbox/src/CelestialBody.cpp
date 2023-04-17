@@ -84,7 +84,7 @@ CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBo
     this->rotationalAxis = vec3(vec4(0, 1, 0, 0) * rotMat);
 
     //initRotMat = rotate(axialTilt, this->rotationalAxis);
-    initRotMat = rotate(axialTilt, this->rotationalAxis);
+    initRotMat = rotate((double)degreeToRad(axialTilt), this->rotationalAxis);
 }
 
 void CelestialBody::InitRender(string texture_path)
@@ -175,7 +175,7 @@ void CelestialBody::UpdatePosition(float deltaT)
     // On Maj aussi la rotation ici
     // Pas de calcul physique avec la v�locit� angulaire, on fait juste spinner a une vitesse constante
 
-    float rotPerSec = siderealRotationPeriod / 60 / 60;
+    float rotPerSec = 2 * PI * siderealRotationPeriod / 60 / 60;
 
     currentRotation += rotPerSec * SPINFACTOR * deltaT;
 
@@ -234,7 +234,7 @@ mat4 CelestialBody::GetTransformationMatrix()
     vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, MAX) };
     tempPos = normalize(tempPos) * sqrt(length(tempPos));
 
-    return translate(mat4(1.0f),tempPos) * initRotMat * rotate(this->currentRotation, dvec3(0,1,0)) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
+    return rotate(PI/2, dvec3(1, 0, 0)) * translate(mat4(1.0f),tempPos) * initRotMat * rotate((double)degreeToRad(this->currentRotation), dvec3(0,1,0)) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
 }
     /*
 dmat4 CelestialBody::GetTransformationMatrix()
