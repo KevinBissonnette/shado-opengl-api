@@ -1,5 +1,4 @@
 #include "CelestialBody.h"
-
 CelestialBody::CelestialBody()
 {
     // Please don't use this
@@ -37,7 +36,7 @@ CelestialBody::CelestialBody(string name, double mass, float radius, float sider
     this->currentPosition = vec3(0, 0, 0);
 }
 
-CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt)
+CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, double axialTilt)
 {
     // C'est le constructeur pour les diverse planete/planete naine/lune/ast�roide/comet/whatever
 

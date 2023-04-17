@@ -11,6 +11,8 @@
 #include <vector>
 #include <Shado.h>
 #include <Texture2D.h>
+#define vec3 dvec3
+#define mat4 dmat4
 using namespace Shado;
 
 using namespace std;
@@ -87,7 +89,7 @@ public:
 	dvec3 currentPosition = vec3(0, 0, 0);;
 
 	// The rotation, for the current frame, in degree
-	float currentRotation = 0;
+	double currentRotation = 0;
 
 	// The multiplier on the mesh size that will be aplied when dispay
 	float displaySize = 1;
@@ -102,7 +104,7 @@ public:
 
 	CelestialBody();
 	CelestialBody(string name, double mass, float radius, float siderealRotationPeriod);
-	CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, float axialTilt);
+	CelestialBody(string name, double mass, float radius, CelestialBody* parentBody, double semiMajorAxis, double orbitalSpeed, float orbitAngle, float siderealRotationPeriod, double axialTilt);
 
 	void InitRender(string texture_path);
 
