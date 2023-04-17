@@ -29,7 +29,9 @@ public:
 
 	const double G = 0.00000000006674;
 
-	const double BASE_SIZE = 1;
+	const double BASE_SIZE = 0.25;
+
+	const float SPINFACTOR = 0.001;
 
 	// ===============================
 	//			Variable

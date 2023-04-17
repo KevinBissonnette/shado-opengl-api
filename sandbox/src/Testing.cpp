@@ -112,8 +112,7 @@ public:
 		float x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
 		float y = 0.0f;
 		float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
-		//glm::vec3 camPos(x, y, z);
-		glm::vec3 camPos(0, 0, 10);
+		glm::vec3 camPos(x, y, z);
 		for (auto& p : solarSystem) 
 		{
 			p.UpdateRender(camPos, shader);

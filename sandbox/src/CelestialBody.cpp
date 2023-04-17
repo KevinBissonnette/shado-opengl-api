@@ -170,7 +170,7 @@ void CelestialBody::UpdatePosition(float deltaT)
     // On Maj aussi la rotation ici
     // Pas de calcul physique avec la v�locit� angulaire, on fait juste spinner a une vitesse constante
 
-    currentRotation += siderealRotationPeriod * deltaT;
+    currentRotation += siderealRotationPeriod * SPINFACTOR * deltaT;
 
     // Pour �vit� des erreur de float, on s'assure que la rotation reste entre -180 et et 180
     // Car on peut th�oriquement faire plusieur rotation dans une update, on utilise des whiles
@@ -215,8 +215,10 @@ mat4 CelestialBody::GetTransformationMatrix()
     // On applique les transformation dans l'ordre suivant
     // Taille * Tranlation * Rotation
     
-    glm::vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, 10.0f),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, 10.0f) };
-    return /*mat4(displaySize) * */translate(mat4(1.0f),tempPos) * rotate(this->currentRotation, this->rotationalAxis) *scale(glm::mat4(1.0f),glm::vec3(1));
+    float MAX = 10000000000;
+
+    glm::vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, MAX) };
+    return translate(mat4(1.0f),tempPos) * rotate(this->currentRotation, this->rotationalAxis) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
 }
     /*
 dmat4 CelestialBody::GetTransformationMatrix()
