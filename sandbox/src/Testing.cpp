@@ -28,9 +28,6 @@ public:
 	}
 
 	void onInit() override {
-		
-		camera.setRotationSpeed(360);
-
 		shader = new Shader("celestialbody.glsl");
 		glEnable(GL_DEPTH_TEST);
 
