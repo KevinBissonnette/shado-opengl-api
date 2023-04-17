@@ -23,13 +23,11 @@ public:
 	//			Constant
 	// ===============================
 
-	const float PI = 3.14159265359;
+	const double PI = 3.14159265359;
 
-	const float G = 0.00000000006674;
+	const double G = 0.00000000006674;
 
-	const float BASE_SIZE = 1;
-
-	const float FACTOR = 0.000000001;
+	const double BASE_SIZE = 1;
 
 	// ===============================
 	//			Variable
@@ -48,13 +46,13 @@ public:
 	// ===== ] Config [ =====
 
 	// The object mass, kg
-	float mass = 1;
+	double mass = 1;
 
 	// The orbital radius, meter
-	float semiMajorAxis = 100;
+	double semiMajorAxis = 100;
 
 	// The orbital speed, in m/s
-	float orbitalSpeed = 2.5;
+	double orbitalSpeed = 2.5;
 
 	// The celestial body radius, in thousand of Km
 	// It will not be rendered to scale
@@ -80,13 +78,13 @@ public:
 	// The amount of force, for the current frame
 	// Not sure about the unit yet... giganewton aka million of kilonewton ?
 	// Anyway, since all our units are on the same scale, it shouldn't be an issue (famous last words)
-	vec3 currentForce = vec3(0, 0, 0);;
+	dvec3 currentForce = vec3(0, 0, 0);;
 
 	// The velocity, for the current frame, in million of km/day
-	vec3 currentVelocity = vec3(0, 0, 0);
+	dvec3 currentVelocity = vec3(0, 0, 0);
 
 	// The position, for the current frame, in million of km
-	vec3 currentPosition = vec3(0, 0, 0);;
+	dvec3 currentPosition = vec3(0, 0, 0);;
 
 	// The rotation, for the current frame, in degree
 	float currentRotation = 0;
@@ -117,7 +115,7 @@ public:
 
 	// ===== ] Render [ =====
 
-	mat4 GetTransformationMatrix();
+	dmat4 GetTransformationMatrix();
 
 	// ===== ] Utils [ =====
 
