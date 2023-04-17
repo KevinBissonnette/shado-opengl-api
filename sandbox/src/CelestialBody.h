@@ -31,7 +31,7 @@ public:
 
 	const double BASE_SIZE = 0.25;
 
-	const float SPINFACTOR = 0.001;
+	const float SPINFACTOR = 1;
 
 	// ===============================
 	//			Variable
@@ -97,6 +97,7 @@ public:
 	float displaySize = 1;
 
 	vec3 rotationalAxis = vec3(0, 1, 0);
+	dmat4 initRotMat = dmat4(1);
 
 	// ===============================
 	//			Function

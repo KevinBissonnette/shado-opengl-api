@@ -22,6 +22,10 @@ public:
 		
 	}
 
+	float fraction(float a, float b)
+	{
+		return a / b;
+	}
 
 	void onInit() override {
 		
@@ -29,15 +33,38 @@ public:
 		glEnable(GL_DEPTH_TEST);
 
 		// On start par le soleil
-		CelestialBody sun = CelestialBody("sun", 1.9885e30, 695, 25);
+		CelestialBody sun = CelestialBody("Sun", 1.9885e30, 695, fraction(1, 25.05));
 		sun.InitRender("assets/sun.jpg");
 		solarSystem.push_back(sun);
 
 		// Mercury
-		//CelestialBody mercury = CelestialBody("mercury", 3301.1, 2.439, &sun, 57.909050, 4.060800, 0.2, (float)1/(float)176, 2.04);
-		CelestialBody mercury = CelestialBody("mercury", 3.3011e23, 2.439, &sun, 57909050000, 47360, 0.2, (float)1 / (float)176, 2.04);
+		CelestialBody mercury = CelestialBody("Mercury", 3.3011e23, 2.439, &sun, 57909050000, 47360, 20, fraction(1, 58.646), 2.04);
 		mercury.InitRender("assets/mercury.jpg");
 		solarSystem.push_back(mercury);
+
+		// Venus
+		CelestialBody venus = CelestialBody("Venus", 4.8675e24, 6.0518, &sun, 108208000000, 35020, 70, fraction(1, -243.0226), 2.64);
+		venus.InitRender("assets/venus.jpg");
+		solarSystem.push_back(venus);
+
+		// Earth
+		CelestialBody earth = CelestialBody("Earth", 5.972168e24, 6.378137, &sun, 149598023000, 29782.7, 90, fraction(1,1), 23.4392811);
+		earth.InitRender("assets/earth.jpg");
+		solarSystem.push_back(earth);
+
+		// Moon
+		// don't have the right orbit :(
+		/*
+		CelestialBody moon = CelestialBody("Moon", 7.342e22, 1.7381, &earth, 384399000, 1022, 0, fraction(1, 27.321661), 1.5424);
+		moon.InitRender("assets/mercury.jpg");	// Yep on render la lune comme mercure, c'est le plus proche
+		solarSystem.push_back(moon);
+		*/
+
+		// Earth
+		CelestialBody mars = CelestialBody("Mars", 6.4171e23, 3.3962, &sun, 227939366000, 24070, 150, fraction(1, 1.027), 25.19);
+		mars.InitRender("assets/mars.jpg");
+		solarSystem.push_back(mars);
+
 
 		// Old code
 
@@ -88,7 +115,7 @@ public:
 			p.onUpdate(camPos, shader);
 		}*/
 
-		float deltaTime = dt * 24 * 60 * 60;
+		float deltaTime = dt * 24 * 60 * 60 *10;
 
 		for (int x = 0; x < solarSystem.size(); x++)
 		{

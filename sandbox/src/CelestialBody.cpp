@@ -30,6 +30,8 @@ CelestialBody::CelestialBody(string name, double mass, float radius, float sider
     // Et oui, le soleil tourne sur lui-m�me. Spin to win
     this->rotationalAxis = vec3(0, 1, 0);
 
+    initRotMat = rotate(this->currentRotation, this->rotationalAxis);
+
     // On init maintenant la velocit� et positon
     // Soit 0 pour toute
     this->currentVelocity = vec3(0, 0, 0);
@@ -76,10 +78,13 @@ CelestialBody::CelestialBody(string name, double mass, float radius, CelestialBo
     // On le fait ici car on a besoin de la v�locit�
     // C'est vers le haut, avec une rotation de axialTilt selon la normal de l'orbite
     // No idea se que sa implique cot� saison
-    mat4 rotMat = rotate(axialTilt, vec3(normalize(relativePosition)));
+    mat4 rotMat = rotate((double)degreeToRad(axialTilt), vec3(normalize(relativePosition)));
 
     // On applique la matrice de rotation a un vecteur vers le haut et voila !
     this->rotationalAxis = vec3(vec4(0, 1, 0, 0) * rotMat);
+
+    //initRotMat = rotate(axialTilt, this->rotationalAxis);
+    initRotMat = rotate(axialTilt, this->rotationalAxis);
 }
 
 void CelestialBody::InitRender(string texture_path)
@@ -170,7 +175,9 @@ void CelestialBody::UpdatePosition(float deltaT)
     // On Maj aussi la rotation ici
     // Pas de calcul physique avec la v�locit� angulaire, on fait juste spinner a une vitesse constante
 
-    currentRotation += siderealRotationPeriod * SPINFACTOR * deltaT;
+    float rotPerSec = siderealRotationPeriod / 60 / 60;
+
+    currentRotation += rotPerSec * SPINFACTOR * deltaT;
 
     // Pour �vit� des erreur de float, on s'assure que la rotation reste entre -180 et et 180
     // Car on peut th�oriquement faire plusieur rotation dans une update, on utilise des whiles
@@ -215,10 +222,11 @@ mat4 CelestialBody::GetTransformationMatrix()
     // On applique les transformation dans l'ordre suivant
     // Taille * Tranlation * Rotation
     
+    //float MAX = 10000000000;
     float MAX = 10000000000;
 
     glm::vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, MAX) };
-    return translate(mat4(1.0f),tempPos) * rotate(this->currentRotation, this->rotationalAxis) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
+    return translate(mat4(1.0f),tempPos) * initRotMat * rotate(this->currentRotation, dvec3(0,1,0)) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
 }
     /*
 dmat4 CelestialBody::GetTransformationMatrix()
