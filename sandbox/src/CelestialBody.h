@@ -29,7 +29,7 @@ public:
 
 	const double G = 0.00000000006674;
 
-	const double BASE_SIZE = 0.05;
+	const double BASE_SIZE = 0.10;
 
 	const float SPINFACTOR = 1;
 
@@ -75,7 +75,7 @@ public:
 	// The body that this celestial body is orbiting
 	// Be sur that it is initialized before this one !
 	// Will be place at (0,0,0) if empty
-	CelestialBody* parentBody;
+	CelestialBody* parentBody = nullptr;
 
 	// ===== ] Inner Variable [ =====
 

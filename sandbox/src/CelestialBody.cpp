@@ -224,9 +224,15 @@ mat4 CelestialBody::GetTransformationMatrix()
     
     //float MAX = 10000000000;
     float MAX = 750000000;
+    float MIN = 0.0;
+
+    if (parentBody != nullptr)
+    {
+        MIN = parentBody->displaySize;
+    }
 
     vec3 tempPos = { map(currentPosition.x, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.y, 0.0f, 1.0e20, 0.0f, MAX),map(currentPosition.z, 0.0f, 1.0e20, 0.0f, MAX) };
-    //tempPos = tempPos * log(length(tempPos));
+    tempPos = normalize(tempPos) * sqrt(length(tempPos));
 
     return translate(mat4(1.0f),tempPos) * initRotMat * rotate(this->currentRotation, dvec3(0,1,0)) * scale(glm::mat4(1.0f),glm::vec3(displaySize));
 }
@@ -241,7 +247,7 @@ dmat4 CelestialBody::GetTransformationMatrix()
 
 float CelestialBody::GetDisplaySize(float radius)
 {
-    return log(radius) * BASE_SIZE;
+    return log10(radius) * BASE_SIZE;
 }
 
 float CelestialBody::degreeToRad(float degree)
