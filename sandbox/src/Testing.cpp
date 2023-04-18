@@ -160,6 +160,14 @@ public:
 		float x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
 		float y = 0.0f;
 		float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
+
+		if (topView) {
+			y = cameraDistance * 5.0f;
+		}
+		else {
+			y = 0.0f;
+		}
+
 		glm::vec3 camPos(x, y, z);
 		for (auto& p : solarSystem) 
 		{
@@ -191,6 +199,9 @@ public:
 			else if (event.getKeyCode() == SHADO_KEY_D) {
 				cameraHorizontalAngle += 0.5f;
 			}
+			else if (event.getKeyCode() == SHADO_KEY_T) {
+				topView = !topView;
+			}
 			return false;
 			});
 	}
@@ -214,6 +225,7 @@ private:
 	float zoomLevel = 10.0f;
 	float cameraDistance = 25.0f;
 	float cameraHorizontalAngle = 90.0f;
+	bool topView = false;
 };
 
 
