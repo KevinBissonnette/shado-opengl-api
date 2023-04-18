@@ -162,7 +162,7 @@ public:
 		float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
 
 		if (topView) {
-			y = cameraDistance * 5.0f;
+			y = cameraDistance * 1.5f;
 		}
 		else {
 			y = 0.0f;
