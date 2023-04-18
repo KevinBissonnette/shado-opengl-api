@@ -157,15 +157,21 @@ public:
 
 
 	void onDraw() override {
-		float x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
-		float y = 0.0f;
-		float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
+		//float x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
+		//float y = 0.0f;
+		//float z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
+		float x, y, z;
 
 		if (topView) {
 			y = cameraDistance * 1.5f;
+			x = 1.0f;
+			z = 1.0f;
 		}
 		else {
+			x = cameraDistance * sin(glm::radians(45.0f)) * cos(glm::radians(cameraHorizontalAngle));
 			y = 0.0f;
+			z = cameraDistance * cos(glm::radians(45.0f)) * sin(glm::radians(cameraHorizontalAngle));
+
 		}
 
 		glm::vec3 camPos(x, y, z);
